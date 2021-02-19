@@ -1,0 +1,9 @@
+{
+	"contains_albedo": false,
+	"resolution": 1024,
+	"src": {
+		"a": "res://Textures/Rock/Rocks007_1K_Roughness.jpg",
+		"normalmap_flip_y": true,
+		"rgb": "res://Textures/Rock/Rocks007_1K_Normal.jpg"
+	}
+}
