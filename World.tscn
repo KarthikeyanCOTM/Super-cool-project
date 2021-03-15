@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://terrain_textures/slot0_normal_roughness.packed_tex" type="Texture" id=1]
 [ext_resource path="res://terrain_textures/slot3_albedo_bump.packed_tex" type="Texture" id=2]
@@ -14,6 +14,8 @@
 [ext_resource path="res://addons/zylann.hterrain/tools/icons/icon_detail_layer_node.svg" type="Texture" id=12]
 [ext_resource path="res://grass.png" type="Texture" id=13]
 [ext_resource path="res://addons/zylann.hterrain/hterrain_detail_layer.gd" type="Script" id=14]
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Coin/Coin.tscn" type="PackedScene" id=16]
 
 [sub_resource type="ProceduralSky" id=1]
 
@@ -144,8 +146,6 @@ environment = SubResource( 2 )
 [node name="HTerrain" type="Spatial" parent="."]
 script = ExtResource( 9 )
 ambient_wind = 0.134
-lod_scale = 2.0
-map_scale = Vector3( 1, 1, 1 )
 _terrain_data = ExtResource( 11 )
 chunk_size = 32
 collision_enabled = true
@@ -178,3 +178,13 @@ shader_params/u_globalmap_tint_bottom = 0.0
 shader_params/u_globalmap_tint_top = 0.0
 shader_params/u_bottom_ao = 0.0
 shader_params/u_instance_scale = Vector3( 2, 2, 2 )
+
+[node name="Player" parent="." instance=ExtResource( 15 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 72.458, 15.7011, 44.7894 )
+min_pitch = -50.0
+max_pitch = 50.0
+
+[node name="Coins" type="Spatial" parent="."]
+
+[node name="coin" parent="Coins" instance=ExtResource( 16 )]
+collision_layer = 3
