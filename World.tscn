@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://terrain_textures/slot0_normal_roughness.packed_tex" type="Texture" id=1]
 [ext_resource path="res://terrain_textures/slot3_albedo_bump.packed_tex" type="Texture" id=2]
@@ -16,6 +16,10 @@
 [ext_resource path="res://addons/zylann.hterrain/hterrain_detail_layer.gd" type="Script" id=14]
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Coin/Coin.tscn" type="PackedScene" id=16]
+[ext_resource path="res://Fonts/Godot-Fontpack-d244bf6170b399a6d4d26a0d906058ddf2dafdf1/fonts/cmu-typewriter/Typewriter/cmuntx.ttf" type="DynamicFontData" id=17]
+[ext_resource path="res://Counter.gd" type="Script" id=18]
+[ext_resource path="res://NPC/NPC.tscn" type="PackedScene" id=19]
+[ext_resource path="res://Enemy/Enemy.tscn" type="PackedScene" id=20]
 
 [sub_resource type="ProceduralSky" id=1]
 
@@ -135,6 +139,11 @@ void fragment() {
 }
 "
 
+[sub_resource type="DynamicFont" id=5]
+size = 35
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 17 )
+
 [node name="World" type="Spatial"]
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
@@ -186,5 +195,81 @@ max_pitch = 50.0
 
 [node name="Coins" type="Spatial" parent="."]
 
-[node name="coin" parent="Coins" instance=ExtResource( 16 )]
+[node name="CoinHolder1" type="Spatial" parent="Coins"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 66.9191, 15.5349, 39.041 )
+
+[node name="coin" parent="Coins/CoinHolder1" instance=ExtResource( 16 )]
 collision_layer = 3
+
+[node name="CoinHolder2" type="Spatial" parent="Coins"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 86.7158, 14.0812, 39.041 )
+
+[node name="coin" parent="Coins/CoinHolder2" instance=ExtResource( 16 )]
+collision_layer = 3
+
+[node name="CoinHolder3" type="Spatial" parent="Coins"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 128.997, 39.1399, 125.106 )
+
+[node name="coin" parent="Coins/CoinHolder3" instance=ExtResource( 16 )]
+collision_layer = 3
+
+[node name="Control" type="Control" parent="."]
+margin_right = 1280.0
+margin_bottom = 720.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Control"]
+modulate = Color( 0.0470588, 0.0470588, 0.0470588, 1 )
+margin_left = 20.0
+margin_top = 19.0
+margin_right = 167.0
+margin_bottom = 71.0
+rect_scale = Vector2( 1.18844, 1.1856 )
+custom_fonts/font = SubResource( 5 )
+text = "Coins:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Counter" type="Label" parent="Control"]
+modulate = Color( 0.0470588, 0.0470588, 0.0470588, 1 )
+margin_left = 150.0
+margin_top = 19.0
+margin_right = 250.0
+margin_bottom = 71.0
+rect_scale = Vector2( 1.18844, 1.1856 )
+custom_fonts/font = SubResource( 5 )
+text = "Q"
+script = ExtResource( 18 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NPCs" type="Spatial" parent="."]
+
+[node name="NPCHolder" type="Spatial" parent="NPCs"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 61.913, 16.668, 44.639 )
+
+[node name="NPC" parent="NPCs/NPCHolder" instance=ExtResource( 19 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+
+[node name="NPCHolder2" type="Spatial" parent="NPCs"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 182.095, 26.7453, 95.9305 )
+
+[node name="NPC" parent="NPCs/NPCHolder2" instance=ExtResource( 19 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+
+[node name="Enemys" type="Spatial" parent="."]
+
+[node name="EnemyHolder" type="Spatial" parent="Enemys"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 97.1212, 28.4405, 118.741 )
+
+[node name="Enemy" parent="Enemys/EnemyHolder" instance=ExtResource( 20 )]
+[connection signal="body_entered" from="Coins/CoinHolder1/coin" to="Coins/CoinHolder1/coin" method="_on_coin_body_entered"]
+[connection signal="coinCollected" from="Coins/CoinHolder1/coin" to="Control/Counter" method="_on_coin_coinCollected"]
+[connection signal="body_entered" from="Coins/CoinHolder2/coin" to="Coins/CoinHolder2/coin" method="_on_coin_body_entered"]
+[connection signal="coinCollected" from="Coins/CoinHolder2/coin" to="Control/Counter" method="_on_coin_coinCollected"]
+[connection signal="body_entered" from="Coins/CoinHolder3/coin" to="Coins/CoinHolder3/coin" method="_on_coin_body_entered"]
+[connection signal="coinCollected" from="Coins/CoinHolder3/coin" to="Control/Counter" method="_on_coin_coinCollected"]
