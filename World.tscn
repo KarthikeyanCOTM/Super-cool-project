@@ -21,19 +21,6 @@
 [ext_resource path="res://NPC/NPC.tscn" type="PackedScene" id=19]
 [ext_resource path="res://Enemy/Enemy.tscn" type="PackedScene" id=20]
 
-[sub_resource type="ProceduralSky" id=1]
-
-[sub_resource type="Environment" id=2]
-background_mode = 2
-background_sky = SubResource( 1 )
-fog_enabled = true
-fog_depth_end = 648.0
-fog_height_enabled = true
-fog_height_min = 40.0
-fog_height_max = -20.0
-tonemap_mode = 3
-ssao_enabled = true
-
 [sub_resource type="Resource" id=3]
 script = ExtResource( 10 )
 mode = 0
@@ -139,18 +126,25 @@ void fragment() {
 }
 "
 
+[sub_resource type="ProceduralSky" id=1]
+
+[sub_resource type="Environment" id=2]
+background_mode = 2
+background_sky = SubResource( 1 )
+fog_enabled = true
+fog_depth_end = 648.0
+fog_height_enabled = true
+fog_height_min = 40.0
+fog_height_max = -20.0
+tonemap_mode = 3
+ssao_enabled = true
+
 [sub_resource type="DynamicFont" id=5]
 size = 35
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 17 )
 
 [node name="World" type="Spatial"]
-
-[node name="DirectionalLight" type="DirectionalLight" parent="."]
-transform = Transform( 1, 0, 0, 0, -0.759657, 0.650324, 0, -0.650324, -0.759657, 0, 0, 0 )
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource( 2 )
 
 [node name="HTerrain" type="Spatial" parent="."]
 script = ExtResource( 9 )
@@ -188,6 +182,12 @@ shader_params/u_globalmap_tint_top = 0.0
 shader_params/u_bottom_ao = 0.0
 shader_params/u_instance_scale = Vector3( 2, 2, 2 )
 
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 1, 0, 0, 0, -0.759657, 0.650324, 0, -0.650324, -0.759657, 0, 0, 0 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 2 )
+
 [node name="Player" parent="." instance=ExtResource( 15 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 72.458, 15.7011, 44.7894 )
 min_pitch = -50.0
@@ -211,6 +211,12 @@ collision_layer = 3
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 128.997, 39.1399, 125.106 )
 
 [node name="coin" parent="Coins/CoinHolder3" instance=ExtResource( 16 )]
+collision_layer = 3
+
+[node name="CoinHolder4" type="Spatial" parent="Coins"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 139.712, 25.6083, 216.794 )
+
+[node name="coin" parent="Coins/CoinHolder4" instance=ExtResource( 16 )]
 collision_layer = 3
 
 [node name="Control" type="Control" parent="."]
@@ -253,13 +259,16 @@ __meta__ = {
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 61.913, 16.668, 44.639 )
 
 [node name="NPC" parent="NPCs/NPCHolder" instance=ExtResource( 19 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 
 [node name="NPCHolder2" type="Spatial" parent="NPCs"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 182.095, 26.7453, 95.9305 )
 
 [node name="NPC" parent="NPCs/NPCHolder2" instance=ExtResource( 19 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+
+[node name="NPCHolder3" type="Spatial" parent="NPCs"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 180.15, 30.0251, 220.618 )
+
+[node name="NPC" parent="NPCs/NPCHolder3" instance=ExtResource( 19 )]
 
 [node name="Enemys" type="Spatial" parent="."]
 
@@ -267,9 +276,21 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 97.1212, 28.4405, 118.741 )
 
 [node name="Enemy" parent="Enemys/EnemyHolder" instance=ExtResource( 20 )]
+
+[node name="EnemyHolder2" type="Spatial" parent="Enemys"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 129.597, 36.7824, 148.384 )
+
+[node name="Enemy" parent="Enemys/EnemyHolder2" instance=ExtResource( 20 )]
+
+[node name="EnemyHolder3" type="Spatial" parent="Enemys"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 229.248, 30.3979, 200.386 )
+
+[node name="Enemy" parent="Enemys/EnemyHolder3" instance=ExtResource( 20 )]
 [connection signal="body_entered" from="Coins/CoinHolder1/coin" to="Coins/CoinHolder1/coin" method="_on_coin_body_entered"]
 [connection signal="coinCollected" from="Coins/CoinHolder1/coin" to="Control/Counter" method="_on_coin_coinCollected"]
 [connection signal="body_entered" from="Coins/CoinHolder2/coin" to="Coins/CoinHolder2/coin" method="_on_coin_body_entered"]
 [connection signal="coinCollected" from="Coins/CoinHolder2/coin" to="Control/Counter" method="_on_coin_coinCollected"]
 [connection signal="body_entered" from="Coins/CoinHolder3/coin" to="Coins/CoinHolder3/coin" method="_on_coin_body_entered"]
 [connection signal="coinCollected" from="Coins/CoinHolder3/coin" to="Control/Counter" method="_on_coin_coinCollected"]
+[connection signal="body_entered" from="Coins/CoinHolder4/coin" to="Coins/CoinHolder4/coin" method="_on_coin_body_entered"]
+[connection signal="coinCollected" from="Coins/CoinHolder4/coin" to="Control/Counter" method="_on_coin_coinCollected"]

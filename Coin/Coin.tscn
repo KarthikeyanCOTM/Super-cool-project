@@ -24,10 +24,9 @@ tracks/0/keys = {
 }
 
 [node name="coin" type="Area"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.999894, 0 )
 script = ExtResource( 2 )
 
-[node name="coinMesh" type="MeshInstance" parent="." instance=ExtResource( 1 )]
+[node name="coinMesh" parent="." instance=ExtResource( 1 )]
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )

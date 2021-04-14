@@ -1,14 +1,29 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Enemy/Enemy.gd" type="Script" id=1]
+
+[sub_resource type="BoxShape" id=2]
+extents = Vector3( 1.06216, 1.06122, 1.05634 )
+
+[sub_resource type="BoxShape" id=3]
 
 [sub_resource type="CubeMesh" id=1]
 
-[sub_resource type="BoxShape" id=2]
-
 [node name="Enemy" type="KinematicBody"]
+script = ExtResource( 1 )
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="KinematicBody" type="Area" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="KinematicBody"]
+shape = SubResource( 2 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 3 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 mesh = SubResource( 1 )
 material/0 = null
-
-[node name="CollisionShape" type="CollisionShape" parent="."]
-shape = SubResource( 2 )
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="body_entered" from="KinematicBody" to="." method="_on_KinematicBody_body_entered"]

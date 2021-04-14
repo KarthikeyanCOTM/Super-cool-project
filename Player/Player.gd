@@ -1,5 +1,7 @@
 extends KinematicBody
 
+onready var PelletFire = $PelletFire
+
 #movement values
 export var speed : float = 20
 export var acceleration : float = 15
@@ -15,18 +17,23 @@ export(float, 0, 90) var max_pitch : float = 90
 
 var velocity : Vector3
 var y_velocity : float
+onready var rof_timer = $Timer
+export var time_between_shoots = 100.0
 
 #set referances to other nodes(for easier access
 onready var camera_pivot = $CameraPivot
 onready var camera = $CameraPivot/SpringArm/Camera
-
+#captures mouse so it isn't visible
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	rof_timer.wait_time = time_between_shoots/1000
 	
+#releases the mouse if escape is pressed
 func _process(delta):
 	if Input.is_action_just_pressed("ui_cancel"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		
+#moves the camera
 func _input(event):
 	if event is InputEventMouseMotion:
 		rotation_degrees.y -= event.relative.x * mouse_sensitivity
@@ -35,9 +42,11 @@ func _input(event):
 		
 func _physics_process(delta):
 	handel_movement(delta)
-	#if Input.is_action_pressed("attack"):
-		#$AnimationPlayer.play("attackAnimation")
-	
+	if Input.is_action_pressed("attack"):
+		PelletFire._shoot()
+		rof_timer.start()
+
+#handle's player movement
 func handel_movement(delta):
 	var direction : Vector3
 	
@@ -65,3 +74,6 @@ func handel_movement(delta):
 		
 	velocity.y = y_velocity
 	velocity = move_and_slide(velocity, Vector3.UP)
+
+func _on_Timer_timeout():
+	PelletFire._fire_reset()
